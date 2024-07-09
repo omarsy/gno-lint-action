@@ -1,3 +1,3 @@
-module github.com/golangci/golangci-lint-action
+module github.com/omarsy/gno-lint-action
 
 go 1.14

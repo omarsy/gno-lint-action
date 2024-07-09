@@ -21,7 +21,7 @@
     "type": "git",
     "url": "git+https://github.com/golangci/golangci-lint-action.git"
   },
-  "author": "golangci",
+  "author": "omarsy",
   "license": "MIT",
   "dependencies": {
     "@actions/cache": "^3.2.4",

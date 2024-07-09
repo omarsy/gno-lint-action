@@ -69,16 +69,13 @@ export async function goInstall(versionConfig: VersionConfig): Promise<string> {
   )
   printOutput(exres)
 
-  const res = await execShellCommand(
-    `go install -n github.com/golangci/golangci-lint/cmd/golangci-lint@${versionConfig.TargetVersion}`,
-    options
-  )
+  const res = await execShellCommand("go env GOPATH")
   printOutput(res)
 
   // The output of `go install -n` when the binary is already installed is `touch <path_to_the_binary>`.
-  const lintPath = res.stderr.trimStart().trimEnd().split(` `, 2)[1]
+  const lintPath = path.join(res.stdout.trim(), "bin", "gno")
 
-  core.info(`Installed golangci-lint into ${lintPath} in ${Date.now() - startedAt}ms`)
+  core.info(`Installed gno into ${lintPath} in ${Date.now() - startedAt}ms`)
 
   return lintPath
 }
