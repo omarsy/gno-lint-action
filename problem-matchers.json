@@ -1,7 +1,7 @@
 {
   "problemMatcher": [
     {
-      "owner": "golangci-lint-colored-line-number",
+      "owner": "gno-lint-colored-line-number",
       "severity": "error",
       "pattern": [
         {

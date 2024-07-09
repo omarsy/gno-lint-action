@@ -48,7 +48,7 @@ export async function installLint(versionConfig: VersionConfig, mode: InstallMod
  * @returns             path to installed binary of golangci-lint.
  */
 export async function goInstall(versionConfig: VersionConfig): Promise<string> {
-  core.info(`Installing golangci-lint ${versionConfig.TargetVersion}...`)
+  core.info(`Installing gno-lint ${versionConfig.TargetVersion}...`)
 
   const startedAt = Date.now()
 

@@ -256,7 +256,7 @@ async function runLint(lintPath: string, patchPath: string): Promise<void> {
     cmdArgs.cwd = path.resolve(workingDirectory)
   }
 
-  const cmd = `${lintPath} run ${addedArgs.join(` `)} ${userArgs}`.trimEnd()
+  const cmd = `${lintPath} lint ${addedArgs.join(` `)} ${userArgs}`.trimEnd()
 
   core.info(`Running [${cmd}] in [${cmdArgs.cwd || process.cwd()}] ...`)
 
@@ -264,7 +264,7 @@ async function runLint(lintPath: string, patchPath: string): Promise<void> {
   try {
     const res = await execShellCommand(cmd, cmdArgs)
     printOutput(res)
-    core.info(`golangci-lint found no issues`)
+    core.info(`gnoci-lint found no issues`)
   } catch (exc) {
     // This logging passes issues to GitHub annotations but comments can be more convenient for some users.
     // TODO: support reviewdog or leaving comments by GitHub API.
@@ -273,18 +273,18 @@ async function runLint(lintPath: string, patchPath: string): Promise<void> {
     if (exc.code === 1) {
       core.setFailed(`issues found`)
     } else {
-      core.setFailed(`golangci-lint exit with code ${exc.code}`)
+      core.setFailed(`gnoci-lint exit with code ${exc.code}`)
     }
   }
 
-  core.info(`Ran golangci-lint in ${Date.now() - startedAt}ms`)
+  core.info(`Ran gnoci-lint in ${Date.now() - startedAt}ms`)
 }
 
 export async function run(): Promise<void> {
   try {
     const { lintPath, patchPath } = await core.group(`prepare environment`, prepareEnv)
     core.addPath(path.dirname(lintPath))
-    await core.group(`run golangci-lint`, () => runLint(lintPath, patchPath))
+    await core.group(`run gnoci-lint`, () => runLint(lintPath, patchPath))
   } catch (error) {
     core.error(`Failed to run: ${error}, ${error.stack}`)
     core.setFailed(error.message)
