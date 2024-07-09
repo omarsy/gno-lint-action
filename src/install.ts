@@ -1,7 +1,5 @@
 import * as core from "@actions/core"
-import * as tc from "@actions/tool-cache"
 import { exec, ExecOptions } from "child_process"
-import os from "os"
 import path from "path"
 import { promisify } from "util"
 
