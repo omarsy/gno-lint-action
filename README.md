@@ -1,10 +1,10 @@
-# golangci-lint-action
+# gno-lint-action
 
-[![Build Status](https://github.com/golangci/golangci-lint-action/workflows/build-and-test/badge.svg)](https://github.com/golangci/golangci-lint-action/actions)
+[![Build Status](https://github.com/golangci/golangci-lint-action/workflows/build-and-test/badge.svg)](https://github.com/omarsy/gno-lint-action/actions)
 
-It's the official GitHub action for [golangci-lint](https://github.com/golangci/golangci-lint) from its authors.
+It's the official GitHub action for [golangci-lint](https://github.com/omarsy/gno-lint) from its authors.
 
-The action runs [golangci-lint](https://github.com/golangci/golangci-lint) and reports issues from linters.
+The action runs [golangci-lint](https://github.com/omarsy/gno-lint) and reports issues from linters.
 
 ![GitHub Annotations](./static/annotations.png)
 
@@ -16,7 +16,7 @@ The action runs [golangci-lint](https://github.com/golangci/golangci-lint) and r
 [![Open Collective backers and sponsors](https://img.shields.io/badge/OpenCollective-Donate-blue?logo=opencollective&style=for-the-badge)](https://opencollective.com/golangci-lint)
 [![Linter Authors](https://img.shields.io/badge/Linter_Authors-Donate-blue?style=for-the-badge)](https://golangci-lint.run/product/thanks/)
 
-`golangci-lint` is a free and open-source project built by volunteers.
+`gnolangci-lint` is a free and open-source project built by volunteers.
 
 If you value it, consider supporting us, we appreciate it! :heart:
 
@@ -31,7 +31,7 @@ Add `.github/workflows/golangci-lint.yml` with the following contents:
 <summary>Simple Example</summary>
 
 ```yaml
-name: golangci-lint
+name: gno-lint
 on:
   push:
     branches:
@@ -45,7 +45,7 @@ permissions:
   # pull-requests: read
 
 jobs:
-  golangci:
+  gnolangci:
     name: lint
     runs-on: ubuntu-latest
     steps:
@@ -54,7 +54,7 @@ jobs:
         with:
           go-version: stable
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v6
+        uses: omarsy/gnolangci-lint-action@v6
         with:
           version: v1.59
 ```
@@ -79,7 +79,7 @@ permissions:
   # pull-requests: read
 
 jobs:
-  golangci:
+  gnolangci:
     strategy:
       matrix:
         go: [stable]
@@ -92,7 +92,7 @@ jobs:
         with:
           go-version: ${{ matrix.go }}
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v6
+        uses: omarsy/gnolangci-lint-action@v6
         with:
           version: v1.59
 ```
@@ -135,7 +135,7 @@ jobs:
       - id: set-modules
         run: echo "modules=$(go list -m -json | jq -s '.' | jq -c '[.[].Dir]')" >> $GITHUB_OUTPUT
 
-  golangci-lint:
+  gnolangci-lint:
     needs: detect-modules
     runs-on: ubuntu-latest
     strategy:
@@ -147,7 +147,7 @@ jobs:
         with:
           go-version: ${{ env.GO_VERSION }}
       - name: golangci-lint ${{ matrix.modules }}
-        uses: golangci/golangci-lint-action@v6
+        uses: omarsy/gnolangci-lint-action@v6
         with:
           version: ${{ env.GOLANGCI_LINT_VERSION }}
           working-directory: ${{ matrix.modules }}
@@ -183,8 +183,8 @@ jobs:
 ```
 
 ```yaml
-# ./.github/workflows/.golangci-lint-reusable.yml
-name: golangci-lint-reusable
+# ./.github/workflows/.gnolangci-lint-reusable.yml
+name: gnolangci-lint-reusable
 
 on:
   workflow_call:
@@ -229,7 +229,7 @@ jobs:
         with:
           go-version: ${{ inputs.go-version }}
       - name: golangci-lint ${{ matrix.modules }}
-        uses: golangci/golangci-lint-action@v6
+        uses: omarsy/gnolangci-lint-action@v6
         with:
           version: ${{ inputs.golangci-lint-version }}
           working-directory: ${{ matrix.modules }}
@@ -242,16 +242,6 @@ You will also likely need to add the following `.gitattributes` file to ensure t
 ```
 
 </details>
-
-## Compatibility
-
-* `v6.0.0+` removes `annotations` option, removes the default output format (`github-actions`).
-* `v5.0.0+` removes `skip-pkg-cache` and `skip-build-cache` because the cache related to Go itself is already handled by `actions/setup-go`.
-* `v4.0.0+` requires an explicit `actions/setup-go` installation step before using this action: `uses: actions/setup-go@v5`.
-  The `skip-go-installation` option has been removed.
-* `v2.0.0+` works with `golangci-lint` version >= `v1.28.3`
-* `v1.2.2` is deprecated due to we forgot to change the minimum version of `golangci-lint` to `v1.28.3` ([issue](https://github.com/golangci/golangci-lint-action/issues/39))
-* `v1.2.1` works with `golangci-lint` version >= `v1.14.0` ([issue](https://github.com/golangci/golangci-lint-action/issues/39))
 
 ## Options
 
@@ -268,7 +258,7 @@ The version of golangci-lint to use.
 <summary>Example</summary>
 
 ```yml
-uses: golangci/golangci-lint-action@v6
+uses: omarsy/gnolangci-lint-action@v6
 with:
   version: v1.58
   # ...
@@ -288,7 +278,7 @@ The default value is `binary`.
 <summary>Example</summary>
 
 ```yml
-uses: golangci/golangci-lint-action@v6
+uses: omarsy/gnolangci-lint-action@v6
 with:
   install-mode: "goinstall"
   # ...
@@ -308,7 +298,7 @@ By default, it uses the `github.token` from the action.
 <summary>Example</summary>
 
 ```yml
-uses: golangci/golangci-lint-action@v6
+uses: omarsy/gnolangci-lint-action@v6
 with:
   github-token: xxx
   # ...
@@ -333,7 +323,7 @@ The default value is `false`.
 <summary>Example</summary>
 
 ```yml
-uses: golangci/golangci-lint-action@v6
+uses: omarsy/gnolangci-lint-action@v6
 with:
   only-new-issues: true
   # ...
@@ -351,7 +341,7 @@ Working directory, useful for monorepos.
 <summary>Example</summary>
 
 ```yml
-uses: golangci/golangci-lint-action@v6
+uses: omarsy/gnolangci-lint-action@v6
 with:
   working-directory: somedir
   # ...
@@ -372,7 +362,7 @@ The location of the configuration file can be changed by using `--config=`
 <summary>Example</summary>
 
 ```yml
-uses: golangci/golangci-lint-action@v6
+uses: omarsy/gnolangci-lint-action@v6
 with:
   args: --timeout=30m --config=/my/path/.golangci.yml --issues-exit-code=0
   # ...
@@ -398,7 +388,7 @@ The default value is `false`.
 <summary>Example</summary>
 
 ```yml
-uses: golangci/golangci-lint-action@v6
+uses: omarsy/gnolangci-lint-action@v6
 with:
   problem-matchers: true
   # ...
@@ -419,7 +409,7 @@ The default value is `false`.
 <summary>Example</summary>
 
 ```yml
-uses: golangci/golangci-lint-action@v6
+uses: omarsy/gnolangci-lint-action@v6
 with:
   skip-cache: true
   # ...
@@ -439,7 +429,7 @@ The default value is `false`.
 <summary>Example</summary>
 
 ```yml
-uses: golangci/golangci-lint-action@v6
+uses: omarsy/gnolangci-lint-action@v6
 with:
   skip-save-cache: true
   # ...
@@ -461,7 +451,7 @@ If set the number is `<= 0`, the cache will be always invalidate (Not recommende
 <summary>Example</summary>
 
 ```yml
-uses: golangci/golangci-lint-action@v6
+uses: omarsy/gnolangci-lint-action@v6
 with:
   cache-invalidation-interval: 15
   # ...
