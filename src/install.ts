@@ -59,14 +59,6 @@ export async function goInstall(versionConfig: VersionConfig): Promise<string> {
   const bres = await execShellCommand(`cd gno/gnovm && make build`)
   printOutput(bres)
 
-  const options: ExecOptions = { env: { ...process.env, CGO_ENABLED: "1" } }
-
-  const exres = await execShellCommand(
-    `go install github.com/golangci/golangci-lint/cmd/golangci-lint@${versionConfig.TargetVersion}`,
-    options
-  )
-  printOutput(exres)
-
   const res = await execShellCommand("go env GOPATH")
   printOutput(res)
 
