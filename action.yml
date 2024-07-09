@@ -1,17 +1,11 @@
 # https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions
-name: "Golangci-lint"
+name: "Gnolangci-lint"
 description: "Official golangci-lint action with line-attached annotations for found issues, caching and parallel execution."
-author: "golangci"
+author: "teritori"
 inputs:
   version:
     description: |
-      The version of golangci-lint to use.
-      When `install-mode` is `binary` (default) the value can be v1.2 or v1.2.3 or `latest` to use the latest version.
-      When `install-mode` is `goinstall` the value can be v1.2.3, `latest`, or the hash of a commit.
-    required: false
-  install-mode:
-    description: "The mode to install golangci-lint. It can be 'binary' or 'goinstall'."
-    default: "binary"
+      The commit hash or tag to use from https://github.com/gnolang/gno
     required: false
   working-directory:
     description: "golangci-lint working directory, default is project root"
