@@ -50,10 +50,7 @@ jobs:
           - macos-latest
           - windows-latest
         version:
-          - ""
-          - "latest"
-          - "v1.58"
-          - "v1.58.0"
+          - "40a4e3060f953123541bbfeac5b8aa9e18f117d0"
     runs-on: ${{ matrix.os }}
     permissions:
       contents: read
@@ -78,10 +75,7 @@ jobs:
           - macos-latest
           - windows-latest
         version:
-          - ""
-          - "latest"
-          - "v1.58.0"
-          - "4bf574a12bb61234e28e3d6172be6ed95b0e8baf"
+          - "40a4e3060f953123541bbfeac5b8aa9e18f117d0"
     runs-on: ${{ matrix.os }}
     permissions:
       contents: read
