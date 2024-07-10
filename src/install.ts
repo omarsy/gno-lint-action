@@ -27,7 +27,7 @@ const printOutput = (res: ExecRes): void => {
 }
 
 /**
- * Install golangci-lint.
+ * Install gno-lint.
  *
  * @param versionConfig information about version to install.
  * @param mode          installation mode.
@@ -43,7 +43,7 @@ export async function installLint(versionConfig: VersionConfig, mode: InstallMod
  * Install golangci-lint via `go install`.
  *
  * @param versionConfig information about version to install.
- * @returns             path to installed binary of golangci-lint.
+ * @returns             path to installed binary of gno-lint.
  */
 export async function goInstall(versionConfig: VersionConfig): Promise<string> {
   core.info(`Installing gno-lint ${versionConfig.TargetVersion}...`)
@@ -56,7 +56,7 @@ export async function goInstall(versionConfig: VersionConfig): Promise<string> {
   const chres = await execShellCommand(`cd gno && git checkout ${versionConfig.TargetVersion}`)
   printOutput(chres)
 
-  const bres = await execShellCommand(`cd gno/gnovm && make build`)
+  const bres = await execShellCommand(`cd gnovm && make build`)
   printOutput(bres)
 
   const res = await execShellCommand("go env GOPATH")
