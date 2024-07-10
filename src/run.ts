@@ -10,7 +10,6 @@ import { promisify } from "util"
 import { restoreCache, saveCache } from "./cache"
 import { installLint, InstallMode } from "./install"
 import { alterDiffPatch } from "./utils/diffUtils"
-import { findLintVersion } from "./version"
 
 const execShellCommand = promisify(exec)
 const writeFile = promisify(fs.writeFile)
@@ -22,9 +21,9 @@ function isOnlyNewIssues(): boolean {
 
 async function prepareLint(): Promise<string> {
   const mode = core.getInput("install-mode").toLowerCase()
-  const versionConfig = await findLintVersion(<InstallMode>mode)
+  const v: string = core.getInput(`version`) || "latest"
 
-  return await installLint(versionConfig, <InstallMode>mode)
+  return await installLint(v, <InstallMode>mode)
 }
 
 async function fetchPatch(): Promise<string> {

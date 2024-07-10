@@ -3,8 +3,6 @@ import { exec } from "child_process"
 import path from "path"
 import { promisify } from "util"
 
-import { VersionConfig } from "./version"
-
 const execShellCommand = promisify(exec)
 
 export enum InstallMode {
@@ -33,10 +31,10 @@ const printOutput = (res: ExecRes): void => {
  * @param mode          installation mode.
  * @returns             path to installed binary of golangci-lint.
  */
-export async function installLint(versionConfig: VersionConfig, mode: InstallMode): Promise<string> {
+export async function installLint(version: string, mode: InstallMode): Promise<string> {
   core.info(`Installation mode: ${mode}`)
 
-  return goInstall(versionConfig)
+  return goInstall(version)
 }
 
 /**
@@ -45,15 +43,15 @@ export async function installLint(versionConfig: VersionConfig, mode: InstallMod
  * @param versionConfig information about version to install.
  * @returns             path to installed binary of gno-lint.
  */
-export async function goInstall(versionConfig: VersionConfig): Promise<string> {
-  core.info(`Installing gno-lint ${versionConfig.TargetVersion}...`)
+export async function goInstall(version: string): Promise<string> {
+  core.info(`Installing gno-lint ${version}...`)
 
   const startedAt = Date.now()
 
   const clres = await execShellCommand(`git clone https://github.com/gnolang/gno.git`)
   printOutput(clres)
 
-  const chres = await execShellCommand(`cd gno && git checkout ${versionConfig.TargetVersion}`)
+  const chres = await execShellCommand(`cd gno && git checkout ${version}`)
   printOutput(chres)
 
   const bres = await execShellCommand(`cd gnovm && make build && make install`)
