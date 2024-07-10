@@ -84258,7 +84258,7 @@ async function goInstall(version) {
     printOutput(clres);
     const chres = await execShellCommand(`cd gno && git checkout ${version}`);
     printOutput(chres);
-    const bres = await execShellCommand(`cd gnovm && make build && make install`);
+    const bres = await execShellCommand(`cd gno/gnovm && make build && make install`);
     printOutput(bres);
     const res = await execShellCommand("go env GOPATH");
     printOutput(res);
