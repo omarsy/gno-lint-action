@@ -56,7 +56,7 @@ export async function goInstall(versionConfig: VersionConfig): Promise<string> {
   const chres = await execShellCommand(`cd gno && git checkout ${versionConfig.TargetVersion}`)
   printOutput(chres)
 
-  const bres = await execShellCommand(`cd gnovm && make build`)
+  const bres = await execShellCommand(`cd gnovm && make build && make install`)
   printOutput(bres)
 
   const res = await execShellCommand("go env GOPATH")
