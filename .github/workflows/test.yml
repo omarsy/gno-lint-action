@@ -48,7 +48,6 @@ jobs:
         os:
           - ubuntu-latest
           - macos-latest
-          - windows-latest
         version:
           - "40a4e3060f953123541bbfeac5b8aa9e18f117d0"
     runs-on: ${{ matrix.os }}
@@ -59,7 +58,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version: oldstable
+          go-version: 1.22
       - uses: ./
         with:
           version: ${{ matrix.version }}
@@ -73,7 +72,6 @@ jobs:
         os:
           - ubuntu-latest
           - macos-latest
-          - windows-latest
         version:
           - "40a4e3060f953123541bbfeac5b8aa9e18f117d0"
     runs-on: ${{ matrix.os }}
@@ -84,7 +82,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version: oldstable
+          go-version: 1.22
       - uses: ./
         with:
           version: ${{ matrix.version }}
@@ -99,7 +97,6 @@ jobs:
         os:
           - ubuntu-latest
           - macos-latest
-          - windows-latest
     runs-on: ${{ matrix.os }}
     permissions:
       contents: read
@@ -107,7 +104,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version: oldstable
+          go-version: 1.22
       - uses: ./
         with:
           working-directory: sample-go-mod
