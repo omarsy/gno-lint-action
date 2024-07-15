@@ -84433,23 +84433,13 @@ const printOutput = (res) => {
         core.info(res.stderr);
     }
 };
-async function runLint(lintPath, patchPath) {
+async function runLint(lintPath) {
     const debug = core.getInput(`debug`);
     if (debug.split(`,`).includes(`cache`)) {
         const res = await execShellCommand(`${lintPath} cache status`);
         printOutput(res);
     }
-    let userArgs = core.getInput(`args`);
     const addedArgs = [];
-    const userArgsList = userArgs
-        .trim()
-        .split(/\s+/)
-        .filter((arg) => arg.startsWith(`-`))
-        .map((arg) => arg.replace(/^-+/, ``))
-        .map((arg) => arg.split(/=(.*)/, 2))
-        .map(([key, value]) => [key.toLowerCase(), value ?? ""]);
-    const userArgsMap = new Map(userArgsList);
-    const userArgNames = new Set(userArgsList.map(([key]) => key));
     const problemMatchers = core.getBooleanInput(`problem-matchers`);
     if (problemMatchers) {
         const matchersPath = path.join(__dirname, "../..", "problem-matchers.json");
@@ -84459,57 +84449,15 @@ async function runLint(lintPath, patchPath) {
             core.info(`##[add-matcher]${matchersPath}`);
         }
     }
-    const formats = (userArgsMap.get("out-format") || "")
-        .trim()
-        .split(",")
-        .filter((f) => f.length > 0)
-        .filter((f) => !f.startsWith(`github-actions`)) // Removes `github-actions` format.
-        .join(",");
-    if (formats) {
-        // Adds formats but without `github-actions` format.
-        addedArgs.push(`--out-format=${formats}`);
-    }
-    // Removes `--out-format` from the user flags because it's already inside `addedArgs`.
-    userArgs = userArgs.replace(/--out-format=\S*/gi, "").trim();
-    if (isOnlyNewIssues()) {
-        if (userArgNames.has(`new`) || userArgNames.has(`new-from-rev`) || userArgNames.has(`new-from-patch`)) {
-            throw new Error(`please, don't specify manually --new* args when requesting only new issues`);
-        }
-        const ctx = github.context;
-        core.info(`only new issues on ${ctx.eventName}: ${patchPath}`);
-        switch (ctx.eventName) {
-            case `pull_request`:
-            case `pull_request_target`:
-            case `push`:
-                if (patchPath) {
-                    addedArgs.push(`--new-from-patch=${patchPath}`);
-                    // Override config values.
-                    addedArgs.push(`--new=false`);
-                    addedArgs.push(`--new-from-rev=`);
-                }
-                break;
-            case `merge_group`:
-                addedArgs.push(`--new-from-rev=${ctx.payload.merge_group.base_sha}`);
-                // Override config values.
-                addedArgs.push(`--new=false`);
-                addedArgs.push(`--new-from-patch=`);
-                break;
-            default:
-                break;
-        }
-    }
     const cmdArgs = {};
     const workingDirectory = core.getInput(`working-directory`);
     if (workingDirectory) {
         if (!fs.existsSync(workingDirectory) || !fs.lstatSync(workingDirectory).isDirectory()) {
             throw new Error(`working-directory (${workingDirectory}) was not a path`);
         }
-        if (!userArgNames.has(`path-prefix`)) {
-            addedArgs.push(`--path-prefix=${workingDirectory}`);
-        }
         cmdArgs.cwd = path.resolve(workingDirectory);
     }
-    const cmd = `${lintPath} lint ${addedArgs.join(` `)} ${userArgs}`.trimEnd();
+    const cmd = `${lintPath} lint ${addedArgs.join(` `)}`.trimEnd();
     core.info(`Running [${cmd}] in [${cmdArgs.cwd || process.cwd()}] ...`);
     const startedAt = Date.now();
     try {
@@ -84532,9 +84480,9 @@ async function runLint(lintPath, patchPath) {
 }
 async function run() {
     try {
-        const { lintPath, patchPath } = await core.group(`prepare environment`, prepareEnv);
+        const { lintPath } = await core.group(`prepare environment`, prepareEnv);
         core.addPath(path.dirname(lintPath));
-        await core.group(`run gnoci-lint`, () => runLint(lintPath, patchPath));
+        await core.group(`run gnoci-lint`, () => runLint(lintPath));
     }
     catch (error) {
         core.error(`Failed to run: ${error}, ${error.stack}`);
